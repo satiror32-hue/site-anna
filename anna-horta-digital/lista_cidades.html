@@ -1,0 +1,276 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lista de Cidades - Projeto ANNA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f8e9;
+      margin: 20px;
+      color: #2e7d32;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .filtro, .relatorios {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .filtro input, .relatorios button {
+      padding: 6px;
+      margin: 0 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .relatorios button {
+      background-color: #2e7d32;
+      color: white;
+      padding: 6px 15px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    .relatorios button:hover {
+      background-color: #1b5e20;
+    }
+    .seletor-cidade {
+      background-color: #ffffff;
+      border: 3px solid #aed581;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 950px;
+      margin: 0 auto 30px auto;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .seletor-cidade h2 {
+      margin-bottom: 15px;
+      color: #33691e;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #aed581;
+      color: #2e7d32;
+    }
+    tr:hover {
+      background-color: #f9fbe7;
+    }
+    tr.selecionada {
+      background-color: #c5e1a5 !important;
+      font-weight: bold;
+    }
+    .center {
+      text-align: center;
+    }
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-voltar {
+      background-color: #888;
+      color: white;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-voltar:hover {
+      background-color: #555;
+    }
+    .btn-adicionar {
+      display: block;
+      width: 200px;
+      margin: 0 auto 20px auto;
+      padding: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      background-color: #2e7d32;
+      color: white;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+    .btn-adicionar:hover {
+      background-color: #1b5e20;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Lista de Cidades - Projeto ANNA</h1>
+
+  <div class="relatorios">
+    <button onclick="gerarRelatorio('cliente')">Relatório de Clientes</button>
+    <button onclick="gerarRelatorio('parceiro')">Relatório de Parceiros</button>
+    <button onclick="gerarRelatorio('suporte')">Relatório de Suporte</button>
+  </div>
+
+  <div class="filtro">
+    <label>Data Inicial: <input type="date" id="dataInicial"></label>
+    <label>Data Final: <input type="date" id="dataFinal"></label>
+    <button onclick="filtrarProducao()">Filtrar Produção e Vendas</button>
+  </div>
+
+  <button class="btn-adicionar" onclick="window.location.href='cadastro_cidade.html'">+ Nova Cidade</button>
+
+  <div class="seletor-cidade">
+    <h2>Selecione uma cidade clicando na linha</h2>
+    <table id="tabelaCidades">
+      <thead>
+        <tr>
+          <th>UF</th>
+          <th>Cidade</th>
+          <th>População</th>
+          <th>Produção</th>
+          <th>Vendas</th>
+          <th>Observações</th>
+          <th class="center">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Linhas inseridas por JS -->
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" style="text-align:right;font-weight:bold">Totais:</td>
+          <td id="totalProducao">-</td>
+          <td id="totalVendas">-</td>
+          <td colspan="2"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="center">
+    <button class="btn-voltar" onclick="voltarParaCoordenador()">Voltar</button>
+  </div>
+
+  <script>
+    let cidadeSelecionada = null;
+
+    function carregarCidades(mostrarResumo = false) {
+      const cidades = JSON.parse(localStorage.getItem("cidades")) || [];
+      const tbody = document.querySelector("#tabelaCidades tbody");
+      const totalProd = document.getElementById("totalProducao");
+      const totalVend = document.getElementById("totalVendas");
+      tbody.innerHTML = "";
+      let somaProducao = 0;
+      let somaVendas = 0;
+
+      if (cidades.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='7' style='text-align:center;'>Nenhuma cidade cadastrada.</td></tr>";
+        totalProd.innerText = "-";
+        totalVend.innerText = "-";
+        return;
+      }
+
+      cidades.forEach(cidade => {
+        let producao = "-";
+        let vendas = "-";
+
+        if (mostrarResumo) {
+          producao = Math.floor(Math.random() * 16000 + 4000);
+          vendas = producao - Math.floor(Math.random() * 2000);
+          somaProducao += producao;
+          somaVendas += vendas;
+        }
+
+        const tr = document.createElement("tr");
+        tr.style.cursor = "pointer";
+        tr.onclick = () => selecionarCidade(cidade);
+        tr.innerHTML = `
+          <td>${cidade.uf}</td>
+          <td>${cidade.cidade}</td>
+          <td>${cidade.populacao || "-"}</td>
+          <td>${producao}</td>
+          <td>${vendas}</td>
+          <td>${cidade.obs || "-"}</td>
+          <td class="actions">
+            <button onclick="event.stopPropagation(); excluirCidade(${cidade.id})" title="Excluir">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      totalProd.innerText = mostrarResumo ? somaProducao : "-";
+      totalVend.innerText = mostrarResumo ? somaVendas : "-";
+    }
+
+    function selecionarCidade(cidade) {
+      cidadeSelecionada = cidade;
+
+      document.querySelectorAll("#tabelaCidades tbody tr").forEach(tr => {
+        tr.classList.remove("selecionada");
+      });
+
+      const linhas = document.querySelectorAll("#tabelaCidades tbody tr");
+      linhas.forEach(tr => {
+        if (tr.cells[1] && tr.cells[1].innerText.trim() === cidade.cidade) {
+          tr.classList.add("selecionada");
+        }
+      });
+    }
+
+    function gerarRelatorio(tipo) {
+      if (!cidadeSelecionada) {
+        alert("Selecione uma cidade clicando em uma linha da tabela.");
+        return;
+      }
+
+      let url = "";
+      if(tipo === 'cliente') {
+        url = `lista_clientes.html?id=${cidadeSelecionada.id}`;
+      } else if(tipo === 'parceiro') {
+        url = `lista_parceiros.html?id=${cidadeSelecionada.id}`;
+      } else if(tipo === 'suporte') {
+        url = `suporte.html?id=${cidadeSelecionada.id}`;
+      }
+      window.location.href = url;
+    }
+
+    function excluirCidade(id) {
+      if (!confirm("Tem certeza que deseja excluir esta cidade?")) return;
+      let cidades = JSON.parse(localStorage.getItem("cidades")) || [];
+      cidades = cidades.filter(c => c.id !== id);
+      localStorage.setItem("cidades", JSON.stringify(cidades));
+      carregarCidades();
+    }
+
+    function filtrarProducao() {
+      const dataInicial = document.getElementById("dataInicial").value;
+      const dataFinal = document.getElementById("dataFinal").value;
+
+      if (!dataInicial || !dataFinal) {
+        alert("Selecione um período de datas!");
+        return;
+      }
+
+      carregarCidades(true);
+    }
+
+    function voltarParaCoordenador() {
+      window.location.href = "coordenador/coordenador.html";
+    }
+
+    window.onload = () => carregarCidades(false);
+  </script>
+
+</body>
+</html>

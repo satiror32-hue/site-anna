@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Suporte - Projeto ANNA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-green-50 min-h-screen flex items-center justify-center p-6 font-sans">
+
+  <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg">
+    <h1 class="text-3xl font-bold text-green-700 mb-8 text-center">Suporte - Projeto ANNA</h1>
+
+    <!-- Administrador -->
+    <section class="mb-8">
+      <h2 class="text-xl font-semibold text-green-800 mb-4 text-center">Administrador</h2>
+      <div class="bg-green-100 rounded-xl p-6 shadow-inner space-y-4">
+        <div class="flex gap-4">
+          <div class="flex-1">
+            <label class="block font-semibold text-green-700 mb-1" for="adm-nome">Nome do Administrador</label>
+            <input id="adm-nome" type="text" placeholder="Digite o nome completo" class="w-full border border-green-300 rounded px-3 py-2 text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div class="w-28">
+            <label class="block font-semibold text-green-700 mb-1" for="adm-horta">N° da Horta</label>
+            <input id="adm-horta" type="number" placeholder="Ex: 1" class="w-full border border-green-300 rounded px-3 py-2 text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+        </div>
+        <div class="flex gap-4 items-center">
+          <div class="flex-1">
+            <label class="block font-semibold text-green-700 mb-1" for="adm-cidade">Cidade</label>
+            <input id="adm-cidade" type="text" placeholder="Nome da cidade" class="w-full border border-green-300 rounded px-3 py-2 text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div class="w-20 flex flex-col">
+            <label class="block font-semibold text-green-700 mb-1" for="adm-estado"> </label>
+            <input id="adm-estado" maxlength="2" type="text" placeholder="UF" class="w-full border border-green-300 rounded px-3 py-2 text-green-900 uppercase text-center focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Auxílio de Irrigação -->
+    <section class="mb-8">
+      <h2 class="text-xl font-semibold text-green-800 mb-4 text-center">Auxílio de Irrigação</h2>
+      <div class="bg-green-100 rounded-xl p-6 shadow-inner space-y-4">
+        <div class="flex gap-4">
+          <div class="flex-1">
+            <label class="block font-semibold text-green-700 mb-1" for="aux-nome">Nome do Responsável</label>
+            <input id="aux-nome" type="text" placeholder="Nome completo" class="w-full border border-green-300 rounded px-3 py-2 text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div class="w-28">
+            <label class="block font-semibold text-green-700 mb-1" for="aux-horta">N° da Horta</label>
+            <input id="aux-horta" type="number" placeholder="Ex: 2" class="w-full border border-green-300 rounded px-3 py-2 text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+        </div>
+        <div class="flex gap-4 items-center">
+          <div class="flex-1">
+            <label class="block font-semibold text-green-700 mb-1" for="aux-cidade">Cidade</label>
+            <input id="aux-cidade" type="text" placeholder="Nome da cidade" class="w-full border border-green-300 rounded px-3 py-2 text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div class="w-20 flex flex-col">
+            <label class="block font-semibold text-green-700 mb-1" for="aux-estado"> </label>
+            <input id="aux-estado" maxlength="2" type="text" placeholder="UF" class="w-full border border-green-300 rounded px-3 py-2 text-green-900 uppercase text-center focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Suporte de Plantação -->
+    <section>
+      <h2 class="text-xl font-semibold text-green-800 mb-4 text-center">Suporte de Plantação</h2>
+      <div class="bg-green-100 rounded-xl p-6 shadow-inner space-y-4">
+        <div class="flex gap-4">
+          <div class="flex-1">
+            <label class="block font-semibold text-green-700 mb-1" for="sup-nome">Nome do Responsável</label>
+            <input id="sup-nome" type="text" placeholder="Nome completo" class="w-full border border-green-300 rounded px-3 py-2 text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div class="w-28">
+            <label class="block font-semibold text-green-700 mb-1" for="sup-horta">N° da Horta</label>
+            <input id="sup-horta" type="number" placeholder="Ex: 3" class="w-full border border-green-300 rounded px-3 py-2 text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+        </div>
+        <div class="flex gap-4 items-center">
+          <div class="flex-1">
+            <label class="block font-semibold text-green-700 mb-1" for="sup-cidade">Cidade</label>
+            <input id="sup-cidade" type="text" placeholder="Nome da cidade" class="w-full border border-green-300 rounded px-3 py-2 text-green-900 focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div class="w-20 flex flex-col">
+            <label class="block font-semibold text-green-700 mb-1" for="sup-estado"> </label>
+            <input id="sup-estado" maxlength="2" type="text" placeholder="UF" class="w-full border border-green-300 rounded px-3 py-2 text-green-900 uppercase text-center focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button
+      onclick="window.location.href='lista_cidades.html'"
+      class="mt-8 w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 rounded-lg transition"
+    >
+      Voltar para Lista de Cidades
+    </button>
+  </div>
+
+  <script>
+    // Força maiúsculas nos campos UF
+    document.querySelectorAll('input[maxlength=\"2\"]').forEach(input => {
+      input.addEventListener('input', () => {
+        input.value = input.value.toUpperCase();
+      });
+    });
+  </script>
+
+</body>
+</html>

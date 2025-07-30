@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro de Parceiro - Projeto ANNA</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: Arial, sans-serif;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      padding: 40px 0;
+      color: #2e7d32;
+    }
+    .form-container {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      width: 500px;
+      max-width: 95%;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    .linha-campos {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    input, textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+      resize: vertical;
+    }
+    input[type="text"], input[type="tel"], input[type="email"], input[type="password"] {
+      width: 100%;
+    }
+    .campo-nome {
+      flex: 2;
+      min-width: 0;
+    }
+    .campo-codigo {
+      flex: 1;
+      min-width: 0;
+      text-align: center;
+      font-weight: bold;
+    }
+    textarea#observacoes {
+      width: 100%;
+      height: auto;
+      min-height: 1.5em;
+      overflow-y: hidden;
+      margin-top: 5px;
+    }
+    .cidade-uf-cep {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px;
+      align-items: center;
+    }
+    .cidade-uf-cep input#cep {
+      flex: 1;
+      min-width: 0;
+    }
+    .cidade-uf-cep input#cidade {
+      flex: 2;
+      min-width: 0;
+    }
+    .cidade-uf-cep input#estado {
+      width: 60px;
+      text-transform: uppercase;
+    }
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+      gap: 10px;
+    }
+    button {
+      padding: 12px 24px;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+    }
+    .btn-salvar {
+      background-color: #2e7d32;
+      color: white;
+    }
+    .btn-salvar:hover {
+      background-color: #1b5e20;
+    }
+    .btn-voltar {
+      background-color: #ccc;
+    }
+    .btn-voltar:hover {
+      background-color: #bbb;
+    }
+    /* Campo cidadeId oculto */
+    input#cidadeId {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Cadastro de Parceiro</h1>
+    <form id="formParceiro" autocomplete="off">
+      <label for="nome">Nome completo e Código do Parceiro:</label>
+      <div class="linha-campos">
+        <input type="text" id="nome" name="nome" placeholder="Nome completo" class="campo-nome" required />
+        <input type="text" id="codigo" name="codigo" class="campo-codigo" readonly />
+      </div>
+
+      <label for="cpf">CNPJ/CPF, Telefone, Login e Senha:</label>
+      <div class="linha-campos">
+        <input type="text" id="cpf" name="cpf" placeholder="CNPJ ou CPF" maxlength="14" required />
+        <input type="tel" id="telefone" name="telefone" placeholder="Telefone" maxlength="11" required />
+        <input type="text" id="login" name="login" placeholder="Login" maxlength="20" required />
+        <input type="password" id="senha" name="senha" placeholder="Senha" maxlength="20" required />
+      </div>
+
+      <label for="email">E-mail e Endereço:</label>
+      <div class="linha-campos" style="margin-top:5px;">
+        <input type="email" id="email" name="email" placeholder="E-mail" />
+        <input type="text" id="endereco" name="endereco" placeholder="Endereço" required />
+      </div>
+
+      <label for="cep">CEP, Cidade e UF:</label>
+      <div class="cidade-uf-cep">
+        <input type="text" id="cep" name="cep" placeholder="CEP" maxlength="10" required />
+        <input type="text" id="cidade" name="cidade" placeholder="Cidade" required />
+        <input type="text" id="estado" name="estado" placeholder="UF" maxlength="2" required />
+      </div>
+
+      <label for="observacoes">Observações:</label>
+      <textarea id="observacoes" name="observacoes" rows="1" placeholder="Digite aqui..."></textarea>
+
+      <input type="text" id="cidadeId" name="cidadeId" />
+
+      <div class="button-group">
+        <button type="button" class="btn-voltar" onclick="voltar()">Voltar</button>
+        <button type="submit" class="btn-salvar">Salvar Parceiro</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Pega parâmetro cidadeId da URL
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Inicializa contador de parceiros
+    if (!localStorage.getItem("ultimoParceiro")) {
+      localStorage.setItem("ultimoParceiro", "0"); // começa em 0 para ANNA P01 no primeiro cadastro
+    }
+
+    // Gera código do parceiro
+    function gerarCodigoAtual() {
+      const prefixo = "ANNA P";
+      let numero = parseInt(localStorage.getItem("ultimoParceiro")) || 0;
+      return `${prefixo}${String(numero + 1).padStart(2, '0')}`;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const cidadeId = getQueryParam('cidadeId');
+      if (cidadeId) {
+        document.getElementById('cidadeId').value = cidadeId;
+      }
+
+      // Preenche código do parceiro
+      document.getElementById('codigo').value = gerarCodigoAtual();
+
+      // Força letras maiúsculas no UF
+      const estadoInput = document.getElementById('estado');
+      estadoInput.addEventListener('input', () => {
+        estadoInput.value = estadoInput.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0,2);
+      });
+
+      // Máscaras básicas
+      document.getElementById('cpf').addEventListener('input', e => {
+        e.target.value = e.target.value.replace(/\D/g, '').slice(0, 14);
+      });
+
+      document.getElementById('telefone').addEventListener('input', e => {
+        e.target.value = e.target.value.replace(/\D/g, '').slice(0, 11);
+      });
+
+      // Ajuste automático do textarea
+      const textarea = document.getElementById('observacoes');
+      textarea.addEventListener('input', () => {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+      });
+
+      // Submit do formulário
+      document.getElementById('formParceiro').addEventListener('submit', event => {
+        event.preventDefault();
+
+        const parceiro = {
+          codigo: document.getElementById('codigo').value,
+          nome: document.getElementById('nome').value,
+          cpf: document.getElementById('cpf').value,
+          telefone: document.getElementById('telefone').value,
+          login: document.getElementById('login').value,
+          senha: document.getElementById('senha').value,
+          email: document.getElementById('email').value,
+          endereco: document.getElementById('endereco').value,
+          cep: document.getElementById('cep').value,
+          cidade: document.getElementById('cidade').value,
+          estado: document.getElementById('estado').value,
+          observacoes: document.getElementById('observacoes').value,
+          cidadeId: document.getElementById('cidadeId').value
+        };
+
+        // Salva parceiro no localStorage
+        const parceiros = JSON.parse(localStorage.getItem('parceiros')) || [];
+        parceiros.push(parceiro);
+        localStorage.setItem('parceiros', JSON.stringify(parceiros));
+
+        // Incrementa o contador para próximo parceiro
+        let numero = parseInt(localStorage.getItem("ultimoParceiro")) || 0;
+        numero += 1;
+        localStorage.setItem("ultimoParceiro", numero);
+
+        alert('Parceiro cadastrado com sucesso!');
+        // Volta para lista de parceiros da cidade
+        window.location.href = `lista_parceiros.html?id=${parceiro.cidadeId}`;
+      });
+    });
+
+    function voltar() {
+      const cidadeId = getQueryParam('cidadeId');
+      if (cidadeId) {
+        window.location.href = `lista_parceiros.html?id=${cidadeId}`;
+      } else {
+        window.history.back();
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Painel Coordenador - Index</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      margin: 0;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .balão {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      text-align: center;
+      width: 320px;
+      backdrop-filter: blur(5px);
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 25px;
+    }
+
+    button {
+      margin: 10px 0;
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .btn-sair {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .btn-sair:hover {
+      background-color: #d32f2f;
+    }
+
+    .btn-painel {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .btn-painel:hover {
+      background-color: #388E3C;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="balão">
+    <h1>Bem-vindo, Coordenador!</h1>
+
+    <button class="btn-sair" onclick="window.location.href='../login.html'">Sair e voltar para o login</button>
+    
+    <button class="btn-painel" onclick="window.location.href='coordenador.html'">Painel do Coordenador</button>
+  </div>
+
+</body>
+</html>

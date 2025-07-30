@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Horta ANNA - Pedido</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      /* Imagem de fundo */
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 0;
+    }
+
+    .form-container {
+      width: 400px;
+      background: rgba(255, 255, 255, 0.95); /* Fundo branco semi-transparente para melhor leitura */
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .logo-container img {
+      width: 150px;
+      border-radius: 10px;
+    }
+
+    .cliente-info {
+      width: 200px;
+      margin-left: 10px;
+      box-sizing: border-box;
+    }
+
+    .cliente-info textarea {
+      width: 100%;
+      height: 80px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      resize: none;
+      line-height: 1.5;
+      text-align: left;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .form-fields h3 {
+      margin-bottom: 10px;
+      display: flex;
+      position: relative;
+      font-weight: bold;
+    }
+
+    .contador-geral {
+      background-color: #eee;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-weight: bold;
+      position: absolute;
+      right: 0;
+      height: 26px;
+      line-height: 16px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+
+    .produto {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .produto span:first-child {
+      flex: 1;
+      font-weight: bold;
+    }
+
+    .quantidade-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex: 1;
+      gap: 10px;
+    }
+
+    input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    input[type="submit"], button#logoutBtn {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    input[type="submit"]:hover, button#logoutBtn:hover {
+      background-color: #45a049;
+    }
+
+    button#logoutBtn {
+      background-color: #d9534f;
+      margin-top: 8px;
+    }
+
+    button#logoutBtn:hover {
+      background-color: #c9302c;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <div class="header">
+      <div class="logo-container">
+        <img src="logo.png" alt="Logo da Horta ANNA" />
+      </div>
+      <div class="cliente-info">
+        <textarea id="infoCliente" readonly>
+Cliente:
+End.:
+Tel:
+        </textarea>
+      </div>
+    </div>
+
+    <div class="form-fields">
+      <h3>
+        Pedido do Cliente
+        <span class="contador-geral" id="contador">0</span>
+      </h3>
+      <form id="pedidoForm">
+        <div class="produto">
+          <span>Alface (unid)</span>
+          <div class="quantidade-wrapper">
+            <input type="number" min="0" name="alface" />
+            <span id="quantidade-alface"></span>
+          </div>
+        </div>
+        <div class="produto">
+          <span>Rúcula (unid)</span>
+          <div class="quantidade-wrapper">
+            <input type="number" min="0" name="rucula" />
+            <span id="quantidade-rucula"></span>
+          </div>
+        </div>
+        <div class="produto">
+          <span>Almeirão (unid)</span>
+          <div class="quantidade-wrapper">
+            <input type="number" min="0" name="almeirao" />
+            <span id="quantidade-almeirao"></span>
+          </div>
+        </div>
+        <input type="submit" value="Enviar Pedido" />
+      </form>
+      <button id="logoutBtn" type="button">Sair</button>
+      <div id="resumoPedido"></div>
+    </div>
+  </div>
+
+  <script>
+    const pedidoForm = document.getElementById('pedidoForm');
+    const contador = document.getElementById('contador');
+    const resumoPedido = document.getElementById('resumoPedido');
+    const infoCliente = document.getElementById('infoCliente');
+
+    // Carrega dados ao iniciar
+    window.addEventListener('load', () => {
+      // Dados do cliente logado (opcional)
+      const cliente = JSON.parse(localStorage.getItem('clienteLogado'));
+      if (cliente) {
+        infoCliente.value = `Cliente: ${cliente.user}\nEnd.: ${cliente.endereco || ''}\nTel: ${cliente.telefone || ''}`;
+      }
+
+      // Pedido salvo
+      const pedidoSalvo = JSON.parse(localStorage.getItem('pedidoCliente'));
+      if (pedidoSalvo) {
+        for (const [key, value] of Object.entries(pedidoSalvo)) {
+          const input = pedidoForm.elements[key];
+          if (input) {
+            input.value = value;
+          }
+        }
+        atualizarContador();
+        mostrarResumo(pedidoSalvo);
+      }
+    });
+
+    function atualizarContador() {
+      const inputs = pedidoForm.querySelectorAll('input[type="number"]');
+      let total = 0;
+      inputs.forEach(input => {
+        total += Number(input.value) || 0;
+      });
+      contador.textContent = total;
+    }
+
+    function mostrarResumo(pedido) {
+      const itens = Object.entries(pedido).filter(([_, qtd]) => qtd > 0);
+      if (itens.length === 0) {
+        resumoPedido.textContent = '';
+        return;
+      }
+      resumoPedido.innerHTML = '<h4>Resumo do Pedido:</h4><ul>' +
+        itens.map(([produto, qtd]) => `<li>${produto}: ${qtd}</li>`).join('') +
+        '</ul>';
+    }
+
+    pedidoForm.addEventListener('input', () => {
+      atualizarContador();
+    });
+
+    pedidoForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const pedidoAtual = {};
+      const inputs = pedidoForm.querySelectorAll('input[type="number"]');
+      inputs.forEach(input => {
+        pedidoAtual[input.name] = Number(input.value) || 0;
+      });
+      localStorage.setItem('pedidoCliente', JSON.stringify(pedidoAtual));
+      mostrarResumo(pedidoAtual);
+      alert('Pedido salvo com sucesso!');
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('pedidoCliente');
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>

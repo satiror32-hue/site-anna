@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Projeto ANNA - Área do Coordenador</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      background: url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
+    }
+    .overlay {
+      background-color: rgba(255, 255, 255, 0.9);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      width: 100%;
+      padding: 30px;
+      background-color: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 100, 0, 0.2);
+      border: 2px solid #a5d6a7;
+    }
+    h1 {
+      color: #2e7d32;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    p {
+      margin-bottom: 35px;
+      font-size: 17px;
+      color: #4e5d52;
+    }
+    .botoes {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .botoes a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, #66bb6a, #43a047);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+      width: 100%;
+      max-width: 280px;
+    }
+    .botoes a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+      background: linear-gradient(135deg, #43a047, #2e7d32);
+    }
+    a[href="../lista_cidades.html"]::before { content: '🌿'; margin-right: 10px; }
+    a[href="../cadastro_admin.html"]::before { content: '👩‍🌾'; margin-right: 10px; }
+    a[href="../login.html"]::before { content: '🚪'; margin-right: 10px; }
+    footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #ffffff;
+      text-shadow: 1px 1px 2px #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="container">
+      <h1 id="boas-vindas">Bem-vindo, Coordenador!</h1>
+      <p>Escolha uma das opções abaixo para gerenciar o Projeto ANNA:</p>
+      <div class="botoes">
+        <a href="../lista_cidades.html">Gerenciar Cidades</a>
+        <a href="../cadastro_admin.html">Cadastrar Administrador</a>
+        <a href="../login.html" onclick="logout(event)">Sair</a>
+      </div>
+      <footer>
+        Projeto ANNA • Área do Coordenador
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    const nomeCoordenador = localStorage.getItem('nomeCoordenador');
+    if (nomeCoordenador) {
+      document.getElementById('boas-vindas').textContent = `Bem-vindo, ${nomeCoordenador}!`;
+    }
+
+    function logout(event) {
+      event.preventDefault();
+      localStorage.removeItem('nomeCoordenador');
+      window.location.href = '../login.html';
+    }
+  </script>
+</body>
+</html>

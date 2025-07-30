@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projeto ANNA - Hidroponia do Futuro</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-green-50 text-gray-800">
+  <!-- Cabeçalho -->
+  <header class="bg-green-600 text-white p-6 shadow">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Projeto ANNA</h1>
+      <nav>
+        <a href="#sobre" class="mx-4 hover:underline">Sobre</a>
+        <a href="#beneficios" class="mx-4 hover:underline">Benefícios</a>
+        <a href="#contato" class="mx-4 hover:underline">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="bg-green-100 py-20">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-4">A Revolução Verde Começa Aqui</h2>
+      <p class="text-lg">O Projeto ANNA é uma iniciativa para transformar hortas urbanas com tecnologia, sustentabilidade e produção eficiente por meio da hidroponia.</p>
+    </div>
+  </section>
+
+  <!-- Painel Entrar / Cadastrar -->
+  <section class="max-w-4xl mx-auto my-12 flex justify-center gap-8">
+    <a href="login.html" 
+       class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded shadow-lg transition transform hover:-translate-y-1">
+      Entrar
+    </a>
+    <a href="cadastro_cliente.html" 
+       class="bg-green-400 hover:bg-green-500 text-green-900 font-bold py-3 px-8 rounded shadow-lg transition transform hover:-translate-y-1">
+      Cadastrar Cliente
+    </a>
+  </section>
+
+  <!-- Sobre o Projeto -->
+  <section id="sobre" class="max-w-4xl mx-auto py-16 px-4">
+    <h3 class="text-3xl font-semibold mb-6">O que é o Projeto ANNA?</h3>
+    <p class="mb-4">ANNA é uma solução inovadora de hortas hidropônicas que une tecnologia e natureza. Nosso sistema usa sensores inteligentes, controle automatizado e uma rede de parceiros locais para cultivar hortaliças frescas com economia de água e espaço.</p>
+    <p>Seja você um produtor, parceiro técnico ou consumidor final, o Projeto ANNA tem um papel pra você nesta transformação verde.</p>
+  </section>
+
+  <!-- Benefícios -->
+  <section id="beneficios" class="bg-white py-16">
+    <div class="max-w-6xl mx-auto px-4">
+      <h3 class="text-3xl font-semibold text-center mb-10">Benefícios da Hidroponia com ANNA</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-6 border rounded-lg shadow bg-green-50">
+          <h4 class="font-bold text-lg mb-2">Sustentabilidade</h4>
+          <p>Economia de até 90% de água em relação à agricultura tradicional.</p>
+        </div>
+        <div class="p-6 border rounded-lg shadow bg-green-50">
+          <h4 class="font-bold text-lg mb-2">Qualidade</h4>
+          <p>Produtos mais frescos, limpos e nutritivos direto da horta para o consumidor.</p>
+        </div>
+        <div class="p-6 border rounded-lg shadow bg-green-50">
+          <h4 class="font-bold text-lg mb-2">Tecnologia</h4>
+          <p>Controle automatizado de irrigação, sensores de nível e produção planejada.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contato -->
+  <section id="contato" class="max-w-4xl mx-auto py-16 px-4">
+    <h3 class="text-3xl font-semibold mb-6">Entre em Contato</h3>
+    <p class="mb-4">Quer participar do Projeto ANNA como cliente, parceiro ou apoiador? Envie uma mensagem para nossa equipe:</p>
+    <form class="grid grid-cols-1 gap-4">
+      <input type="text" placeholder="Seu nome" class="p-3 border rounded" />
+      <input type="email" placeholder="Seu e-mail" class="p-3 border rounded" />
+      <textarea placeholder="Sua mensagem" rows="4" class="p-3 border rounded"></textarea>
+      <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700">Enviar</button>
+    </form>
+  </section>
+
+  <!-- Rodapé -->
+  <footer class="bg-green-600 text-white text-center py-6">
+    <p>&copy; 2025 Projeto ANNA. Todos os direitos reservados.</p>
+  </footer>
+</body>
+</html>

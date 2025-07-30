@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cadastro de Administrador</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .painel {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      width: 400px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color: #2e7d32;
+    }
+
+    .linha {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .linha input {
+      flex: 1;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 6px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #388E3C;
+    }
+
+    .voltar {
+      background-color: #f44336;
+    }
+
+    .voltar:hover {
+      background-color: #c62828;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="painel">
+    <h2>Cadastrar Administrador</h2>
+
+    <input type="text" placeholder="Nome do Administrador" />
+
+    <div class="linha">
+      <input type="text" placeholder="Cidade" />
+      <input type="text" placeholder="UF" maxlength="2" />
+    </div>
+
+    <div class="linha">
+      <input type="text" placeholder="CPF" />
+      <input type="text" placeholder="Telefone" />
+    </div>
+
+    <div class="linha">
+      <input type="text" placeholder="Login" />
+      <input type="password" placeholder="Senha" />
+    </div>
+
+    <button>Cadastrar</button>
+    <button class="voltar" onclick="window.location.href='coordenador/coordenador.html'">Voltar</button>
+  </div>
+
+</body>
+</html>

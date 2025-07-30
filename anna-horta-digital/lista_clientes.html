@@ -1,0 +1,411 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lista de Clientes - Projeto ANNA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f8e9;
+      margin: 20px;
+      color: #2e7d32;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    #btnNovoCliente {
+      display: block;
+      margin: 0 auto 20px auto;
+      padding: 10px 20px;
+      background-color: #2e7d32;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      max-width: 200px;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+    #btnNovoCliente:hover {
+      background-color: #1b5e20;
+    }
+    #filtros {
+      max-width: 900px;
+      margin: 0 auto 20px auto;
+      background: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    #filtros label {
+      font-weight: bold;
+      color: #2e7d32;
+    }
+    #filtros input[type="date"] {
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    #filtros button {
+      background-color: #2e7d32;
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    #filtros button:hover {
+      background-color: #1b5e20;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto 30px auto;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+      vertical-align: middle;
+    }
+    th {
+      background-color: #aed581;
+      color: #2e7d32;
+    }
+    tr:hover {
+      background-color: #f9fbe7;
+    }
+
+    button.abrir-modal {
+      background-color: #558b2f;
+      border: none;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 13px;
+      transition: background-color 0.3s ease;
+    }
+    button.abrir-modal:hover {
+      background-color: #33691e;
+    }
+
+    .center {
+      text-align: center;
+    }
+    .btn-voltar {
+      background-color: #888;
+      margin-bottom: 30px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .btn-voltar:hover {
+      background-color: #555;
+    }
+
+    /* Modal Styles */
+    #modalCompra {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    #modalCompra .modal-content {
+      background: white;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 100%;
+      padding: 20px 25px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    #modalCompra h2 {
+      margin-top: 0;
+      color: #2e7d32;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #modalCompra label {
+      display: block;
+      font-weight: bold;
+      margin-top: 12px;
+      color: #2e7d32;
+    }
+    #modalCompra input[type="number"] {
+      width: 80px;
+      padding: 8px 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    #modalCompra .buttons {
+      margin-top: 25px;
+      display: flex;
+      justify-content: space-between;
+    }
+    #modalCompra button {
+      padding: 10px 20px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+    #modalCompra .btn-salvar {
+      background-color: #2e7d32;
+      color: white;
+    }
+    #modalCompra .btn-salvar:hover {
+      background-color: #1b5e20;
+    }
+    #modalCompra .btn-fechar {
+      background-color: #888;
+      color: white;
+    }
+    #modalCompra .btn-fechar:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Lista de Clientes - Projeto ANNA</h1>
+
+  <button id="btnNovoCliente" onclick="window.location.href='cadastro_cliente.html'">+ Novo Cliente</button>
+
+  <div id="filtros">
+    <label for="dataInicio">Data Início:</label>
+    <input type="date" id="dataInicio" aria-label="Data Início" />
+    <label for="dataFim">Data Fim:</label>
+    <input type="date" id="dataFim" aria-label="Data Fim" />
+    <button onclick="filtrar()">Filtrar</button>
+    <button onclick="limparFiltro()">Limpar Filtro</button>
+  </div>
+
+  <table id="tabelaClientes" aria-label="Tabela de Clientes">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Contato</th>
+        <th>Data Compra</th>
+        <th>Observações</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Clientes aparecerão aqui -->
+    </tbody>
+  </table>
+
+  <div class="center">
+    <button class="btn-voltar" onclick="window.location.href='lista_clientes.html'">Voltar para Lista de Clientes</button>
+  </div>
+
+  <!-- Modal Compra -->
+  <div id="modalCompra" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+    <div class="modal-content">
+      <h2 id="modalTitulo">Editar Data da Compra</h2>
+      <form id="formCompra" onsubmit="salvarCompra(event)">
+        <label for="diaCompra">Dia:</label>
+        <input type="number" id="diaCompra" name="diaCompra" min="1" max="31" required aria-required="true" />
+        <label for="mesCompra">Mês:</label>
+        <input type="number" id="mesCompra" name="mesCompra" min="1" max="12" required aria-required="true" />
+        <label for="anoCompra">Ano:</label>
+        <input type="number" id="anoCompra" name="anoCompra" min="2000" max="2100" required aria-required="true" />
+        <div class="buttons">
+          <button type="submit" class="btn-salvar">Salvar</button>
+          <button type="button" class="btn-fechar" onclick="fecharModal()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Variáveis globais
+    let clientes = [];
+    let cidadeIdAtual = null;
+    let clienteEditandoId = null;
+
+    // Função para carregar clientes da cidade selecionada
+    function carregarClientes() {
+      const urlParams = new URLSearchParams(window.location.search);
+      cidadeIdAtual = parseInt(urlParams.get('cidadeId')) || null;
+
+      clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+      const cidades = JSON.parse(localStorage.getItem("cidades")) || [];
+      const cidade = cidades.find(c => c.id === cidadeIdAtual);
+
+      document.querySelector('h1').textContent = cidade
+        ? `Lista de Clientes - ${cidade.cidade} (${cidade.uf})`
+        : "Lista de Clientes";
+
+      preencherTabela(clientes);
+    }
+
+    // Preenche tabela, com opção de filtro externo
+    function preencherTabela(lista) {
+      const tbody = document.querySelector("#tabelaClientes tbody");
+      tbody.innerHTML = "";
+
+      if (!lista.length) {
+        tbody.innerHTML = "<tr><td colspan='5' style='text-align:center;'>Nenhum cliente cadastrado.</td></tr>";
+        return;
+      }
+
+      lista.forEach(c => {
+        // Só mostrar clientes da cidade atual
+        if (cidadeIdAtual && c.cidadeId !== cidadeIdAtual) return;
+
+        let dataCompraStr = "-";
+        if (c.compraMes) {
+          dataCompraStr = `${String(c.compraMes.dia).padStart(2,"0")}/` +
+                          `${String(c.compraMes.mes).padStart(2,"0")}/` +
+                          `${c.compraMes.ano}`;
+        }
+
+        // Mostrar telefone ou email no contato
+        const contato = c.telefone || c.email || "-";
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${c.nome}</td>
+          <td>${contato}</td>
+          <td>${dataCompraStr}</td>
+          <td>${c.obs || "-"}</td>
+          <td>
+            <button class="abrir-modal" onclick="abrirModalCompra(${c.id})" title="Editar data da compra do cliente ${c.nome}">
+              Ver Compra
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Função abrir modal e carregar dados da compra para edição
+    function abrirModalCompra(clienteId) {
+      clienteEditandoId = clienteId;
+      const cliente = clientes.find(c => c.id === clienteId);
+      if (!cliente) return alert("Cliente não encontrado");
+
+      const dia = cliente.compraMes?.dia || 1;
+      const mes = cliente.compraMes?.mes || 1;
+      const ano = cliente.compraMes?.ano || new Date().getFullYear();
+
+      document.getElementById("diaCompra").value = dia;
+      document.getElementById("mesCompra").value = mes;
+      document.getElementById("anoCompra").value = ano;
+
+      document.getElementById("modalCompra").style.display = "flex";
+      document.getElementById("diaCompra").focus();
+    }
+
+    // Fechar modal
+    function fecharModal() {
+      document.getElementById("modalCompra").style.display = "none";
+      clienteEditandoId = null;
+    }
+
+    // Fechar modal clicando fora da caixa
+    document.getElementById('modalCompra').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) {
+        fecharModal();
+      }
+    });
+
+    // Salvar compra no localStorage e atualizar lista
+    function salvarCompra(event) {
+      event.preventDefault();
+
+      const dia = parseInt(document.getElementById("diaCompra").value);
+      const mes = parseInt(document.getElementById("mesCompra").value);
+      const ano = parseInt(document.getElementById("anoCompra").value);
+
+      if (clienteEditandoId === null) return;
+
+      const cliente = clientes.find(c => c.id === clienteEditandoId);
+      if (!cliente) return alert("Cliente não encontrado");
+
+      cliente.compraMes = { dia, mes, ano };
+
+      localStorage.setItem("clientes", JSON.stringify(clientes));
+
+      fecharModal();
+      filtrar(); // Atualiza a tabela já com filtro ativo
+    }
+
+    // Filtro por intervalo de datas com validação
+    function filtrar() {
+      const dataInicio = document.getElementById("dataInicio").value;
+      const dataFim = document.getElementById("dataFim").value;
+
+      if (dataInicio && dataFim && dataInicio > dataFim) {
+        alert("A data inicial não pode ser maior que a data final.");
+        return;
+      }
+
+      let listaFiltrada = clientes.filter(c => c.cidadeId === cidadeIdAtual);
+
+      if (dataInicio || dataFim) {
+        listaFiltrada = listaFiltrada.filter(c => {
+          if (!c.compraMes) return false;
+
+          const dia = String(c.compraMes.dia).padStart(2, "0");
+          const mes = String(c.compraMes.mes).padStart(2, "0");
+          const ano = c.compraMes.ano;
+          const dataCompra = `${ano}-${mes}-${dia}`;
+
+          if (dataInicio && dataFim) {
+            return dataCompra >= dataInicio && dataCompra <= dataFim;
+          } else if (dataInicio) {
+            return dataCompra >= dataInicio;
+          } else if (dataFim) {
+            return dataCompra <= dataFim;
+          }
+          return true;
+        });
+      }
+
+      preencherTabela(listaFiltrada);
+    }
+
+    // Limpar filtro
+    function limparFiltro() {
+      document.getElementById("dataInicio").value = "";
+      document.getElementById("dataFim").value = "";
+      preencherTabela(clientes.filter(c => c.cidadeId === cidadeIdAtual));
+    }
+
+    window.onload = carregarClientes;
+  </script>
+</body>
+</html>

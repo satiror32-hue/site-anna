@@ -1,0 +1,204 @@
+﻿<!-- CÓDIGO COMPLETO: clique para expandir -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lista de Parceiros - Projeto ANNA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f8e9;
+      margin: 20px;
+      color: #2e7d32;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .filtro-datas {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .filtro-datas input {
+      padding: 6px;
+      margin: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    .btn-filtrar {
+      padding: 8px 16px;
+      margin-left: 20px;
+      background-color: #558b2f;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-filtrar:hover {
+      background-color: #33691e;
+    }
+    .btn-adicionar {
+      display: block;
+      width: 220px;
+      margin: 0 auto 20px auto;
+      padding: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      background-color: #2e7d32;
+      color: white;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+      text-align: center;
+      text-decoration: none;
+    }
+    .btn-adicionar:hover {
+      background-color: #1b5e20;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto 30px auto;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #aed581;
+      color: #2e7d32;
+    }
+    tr:hover {
+      background-color: #f9fbe7;
+    }
+    .center {
+      text-align: center;
+    }
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-voltar {
+      background-color: #888;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: block;
+      margin: 0 auto;
+      max-width: 200px;
+    }
+    .btn-voltar:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Parceiros da Cidade</h1>
+
+  <div class="filtro-datas">
+    <label>Data Inicial: <input type="date" id="dataInicial"></label>
+    <label style="margin-left: 20px;">Data Final: <input type="date" id="dataFinal"></label>
+    <button onclick="filtrarProducao()" class="btn-filtrar">Filtrar Produção e Vendas</button>
+  </div>
+
+  <button class="btn-adicionar" id="btnNovoParceiro">+ Novo Parceiro</button>
+
+  <table id="tabelaParceiros">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>CPF/CNPJ</th>
+        <th>Telefone</th>
+        <th>Login</th>
+        <th>E-mail</th>
+        <th>Endereço</th>
+        <th>Observações</th>
+        <th class="center">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Linhas inseridas por JS -->
+    </tbody>
+  </table>
+
+  <div class="center">
+    <button class="btn-voltar" onclick="window.location.href='lista_cidades.html'">Voltar</button>
+  </div>
+
+  <script>
+    // Pega o ID da cidade da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const cidadeId = urlParams.get('id');
+
+    if (!cidadeId) {
+      document.body.innerHTML = '<h2 style="text-align:center; color:red;">ID da cidade não informada.</h2>';
+    } else {
+      function carregarParceiros() {
+        const parceiros = JSON.parse(localStorage.getItem("parceiros")) || [];
+        const tbody = document.querySelector("#tabelaParceiros tbody");
+        tbody.innerHTML = "";
+
+        const parceirosDaCidade = parceiros.filter(p => p.cidadeId == cidadeId);
+
+        if (parceirosDaCidade.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;">Nenhum parceiro cadastrado nesta cidade.</td></tr>`;
+          return;
+        }
+
+        parceirosDaCidade.forEach(parceiro => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${parceiro.codigo}</td>
+            <td>${parceiro.nome}</td>
+            <td>${parceiro.cpf}</td>
+            <td>${parceiro.telefone}</td>
+            <td>${parceiro.login}</td>
+            <td>${parceiro.email || "-"}</td>
+            <td>${parceiro.endereco || "-"}</td>
+            <td>${parceiro.observacoes || "-"}</td>
+            <td class="actions">
+              <button onclick="excluirParceiro('${parceiro.codigo}')" title="Excluir">🗑️</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      function excluirParceiro(codigo) {
+        if (!confirm("Tem certeza que deseja excluir este parceiro?")) return;
+        let parceiros = JSON.parse(localStorage.getItem("parceiros")) || [];
+        parceiros = parceiros.filter(p => p.codigo !== codigo);
+        localStorage.setItem("parceiros", JSON.stringify(parceiros));
+        carregarParceiros();
+      }
+
+      const btnNovoParceiro = document.getElementById('btnNovoParceiro');
+      btnNovoParceiro.onclick = () => {
+        window.location.href = `cadastro_parceiro.html?cidadeId=${cidadeId}`;
+      };
+
+      function filtrarProducao() {
+        const inicio = document.getElementById('dataInicial').value;
+        const fim = document.getElementById('dataFinal').value;
+        alert(`(Ação futura) Filtrar dados de produção entre ${inicio} e ${fim}`);
+      }
+
+      carregarParceiros();
+    }
+  </script>
+
+</body>
+</html>
