@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+anna-horta-digital/pedido_cliente.html<!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
@@ -7,7 +7,6 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      /* Imagem de fundo */
       background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
       background-size: cover;
       margin: 0;
@@ -20,7 +19,7 @@
 
     .form-container {
       width: 400px;
-      background: rgba(255, 255, 255, 0.95); /* Fundo branco semi-transparente para melhor leitura */
+      background: rgba(255, 255, 255, 0.95);
       padding: 20px 30px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -33,7 +32,7 @@
       margin-bottom: 20px;
     }
 
-    .logo-container img {
+    .logotipo-container img {
       width: 150px;
       border-radius: 10px;
     }
@@ -140,8 +139,8 @@
 <body>
   <div class="form-container">
     <div class="header">
-      <div class="logo-container">
-        <img src="logo.png" alt="Logo da Horta ANNA" />
+      <div class="logotipo-container">
+        <img src="logotipo.png" alt="Logotipo da Horta ANNA" />
       </div>
       <div class="cliente-info">
         <textarea id="infoCliente" readonly>
@@ -192,15 +191,12 @@ Tel:
     const resumoPedido = document.getElementById('resumoPedido');
     const infoCliente = document.getElementById('infoCliente');
 
-    // Carrega dados ao iniciar
     window.addEventListener('load', () => {
-      // Dados do cliente logado (opcional)
       const cliente = JSON.parse(localStorage.getItem('clienteLogado'));
       if (cliente) {
         infoCliente.value = `Cliente: ${cliente.user}\nEnd.: ${cliente.endereco || ''}\nTel: ${cliente.telefone || ''}`;
       }
 
-      // Pedido salvo
       const pedidoSalvo = JSON.parse(localStorage.getItem('pedidoCliente'));
       if (pedidoSalvo) {
         for (const [key, value] of Object.entries(pedidoSalvo)) {
